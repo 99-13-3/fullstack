@@ -1,5 +1,4 @@
 import hashlib
-
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session
 import certifi
@@ -90,9 +89,7 @@ def content_page():
 
 # -----글쓰기 페이지로 이동
 def post_write():
-
     token_receive = request.cookies.get('mytoken')
-
 
 @app.route('/posting')
 def posting_get():
@@ -103,14 +100,13 @@ def post_write():
     desc = request.form['desc']
     member_id = request.form['member_id']
     doc = {
-
         'title': title,
         'desc': desc,
         'member_id':member_id
     }
     db.gugupost.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '게시글 등록 완료'})
-
+  
     # token_receive = request.cookies.get('mytoken')
     # try:
     #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -121,7 +117,6 @@ def post_write():
     #     return render_template('index.html', result='fail', msg='만료된 토큰')
     # except jwt.exceptions.DecodeError:
     #     return render_template('login.html', result='fail', msg='로그인 후 이용해 주십시오.')
-
 
 # -----게시글 올리기
 @app.route('/posting', methods=["POST"])
@@ -149,13 +144,8 @@ def post_done():
 # ----- 게시글리스트
 @app.route("/posting/list", methods=["GET"])
 def post_list():
-
-
-    posting_list = list(db.gugupost.find({}, {'_id':False}))
-    print(posting_list)
-
-
-    return jsonify({'posting_list': posting_list})
+   posting_list = list(db.gugupost.find({}, {'_id':False}))
+   return jsonify({'posting_list': posting_list})
 
 # ------ 게시글 좋아요/싫어요
 @app.route("/posting/like", methods=["GET"])
@@ -190,15 +180,11 @@ def post_update():
     member_id = ['member_key']
     update_receive = ['update_give']
     db.gugupost.update_one({'memberid': member_id}, {'$set': {'post_desc': str(update_receive)}})
-
-
-
     return jsonify({'post_up_msg': '게시글 수정 완료'})
 
 # -----게시글 삭제 기능
 @app.route("/posting/delete", methods=["POST"])
 def post_remove():
-
     token_receive = request.cookies.get('mytoken')
 
     try:
@@ -206,7 +192,6 @@ def post_remove():
         user_info = db.info.find_one({"id": payload['id']})
         object_id_receive = request.form['object_id_give']
         writer = db.gugupost.find_one({'_id': ObjectId(object_id_receive)})['member_id']
-
 
         if user_info['member_id'] == writer:
             db.comment.delete_one({'_id': ObjectId(object_id_receive)})
@@ -234,7 +219,6 @@ def post_comment():
     comment_receive = request.form['comment_give']
     member_id = request.form['member_id']
 
-
     doc = {
         # 'member_id' : member_id,
         'comment' : comment_receive,
@@ -247,7 +231,6 @@ def post_comment():
 def get_comment():
     comment_list = list(db.comment.find({}, {'_id': False}))
     return jsonify({'comments': comment_list})
-
 
 #
 
