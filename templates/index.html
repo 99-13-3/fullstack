@@ -55,12 +55,7 @@
         crossorigin="anonymous">
 </script>
 <script>
-
-    $(document).ready(function () {
-        show_bucket();
-    });
-
-    <!-- function get_Qna_list() {
+        function get_Qna_list() {
         $.ajax({
             type: "GET",
             url: "/posting/list",
@@ -68,13 +63,11 @@
             success: function (response) {
 
                 let page_limit = 10;
-
                 let qnaList = response['posting_list']
 
                 for (let i = 0; i < qnaList.length; i++) {
                     let post_title = qnaList[i]['post_title']
                     let member_id = qnaList[i]['member_id']
-
                     let temp = `<tr>
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -91,8 +84,9 @@
 
                     $('#Qna_list').append(temp)
             }
+        }
         });
-    } -->
+    }
 
     function get_login_page() {
 
@@ -101,7 +95,6 @@
             url: "/login",
             data: {},
             success: function (response) {
-
             }
         });
     }
@@ -117,13 +110,10 @@
         let posting_list = [post1, post2, post3, post4];
 
         Qna_list_data(posting_list)
-
     }
 
     function Qna_list_data(qnaList) {
-
         console.log("hi")
-
         console.log(qnaList.length)
 
         for (let i = 0; i < qnaList.length; i++) {
@@ -146,8 +136,6 @@
             $('#Qna_list').append(temp)
 
         }
-
-
     }
 
 </script>
@@ -192,7 +180,7 @@
                         </span>
                         </div>
                     </form>
-                    <form action="/login" method="post">
+                    <form action="/login" method="get">
                         <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
                     </form>
                 </div>
@@ -298,16 +286,12 @@
             </table>
 
         </div>
-
-
     </section>
     <footer class="footer_wrap">
         <!-- 푸터 - 페이지 하단 -->
-
     </footer>
-
-
 </div>
-
+<script src="../static/js/login.js"></script>
+<script src="../static/js/content.js"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
 import hashlib
-
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session
-# import certifi
+import certifi
 from pymongo import MongoClient
 
 import jwt
@@ -11,6 +10,8 @@ import datetime
 app = Flask(__name__)
 ca=certifi.where()
 client = MongoClient('mongodb+srv://test:sparta@cluster0.lreiodk.mongodb.net/Cluster0?retryWrites=true&w=majority',tlsCAFile=ca)
+
+
 db=client.info
 
 SECRET_KEY = 'FLOW'
@@ -73,34 +74,48 @@ def register():
       else:
          return jsonify({'msg': '이미 존재하는 아이디 입니다.'})
 
+@app.route('/post_edit')
+def post_main():
+   return render_template('editorTemplate.html')
+
+@app.route('/post_edit/post', methods=["POST"])
+def post_do():
+   
+   return render_template('editorTemplate.html')
+   
       
-# @app.route('/content/post_id', methods=['GET'])
+# @app.route('/content')
 # def content_show():
-#    titles=list(db.포스트.find_one({},{'_id':False}))
-#    post_desc=list(db.포스트.find_one({},{'_id':False}))
-#    post_key=list(db.포스트.find_one({},{'_id':False}))
-#    comments=list(db.코멘트.find_one({},{'_id':False}))
-#    member_key=list(db.유저정보.find_one({},{'_id':False}))
+#    return render_template('index.html')
+
+# @app.route('/content/post_check', methods=['GET'])
+# def content_get():
+#    titles=list(db.gugupost.find_one({},{'_id':False}))
+#    post_desc=list(db.gugupost.find_one({},{'_id':False}))
+#    post_key=list(db.gugupost.find_one({},{'_id':False}))
+#    comments=list(db.comment.find_one({},{'_id':False}))
+#    member_key=list(db.info.find_one({},{'_id':False}))
 #    return jsonify({'comment_list':comments, 'post_desc':post_desc,
 #                    'member_id': member_key, 'post_id': post_key,
 #                    'post_title': titles})
 
+   
+
+
 # -----글쓰기 페이지로 이동
 def post_write():
 
-token_receive = request.cookies.get('mytoken')
+   token_receive = request.cookies.get('mytoken')
 
-    try:
+   try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
         return render_template('editorTemplate.html')
 
 
-    except jwt.ExpiredSignatureError:
+   except jwt.ExpiredSignatureError:
         return render_template('index.html', result='fail', msg='만료된 토큰')
-    except jwt.exceptions.DecodeError:
+   except jwt.exceptions.DecodeError:
         return render_template('login.html', result='fail', msg='로그인 후 이용해 주십시오.')
-
 
 # -----게시글 올리기
 @app.route('/posting', methods=["POST"])
@@ -128,19 +143,17 @@ def post_done():
 # ----- 게시글리스트
 @app.route("/posting/list", methods=["GET"])
 def post_list():
-
-    posting_list = list(db.gugupost.find({}, {'_id':False}))
-
-    return jsonify({'posting_list': posting_list})
+   posting_list = list(db.gugupost.find({}, {'_id':False}))
+   return jsonify({'posting_list': posting_list})
 
 # ------ 게시글 좋아요/싫어요
 @app.route("/posting/like", methods=["GET"])
 def post_like():
-token_receive = request.cookies.get('mytoken')
-    try:
+   token_receive = request.cookies.get('mytoken')
+   try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         post_id = int(request.form['post_id'])
-        user_info = flow99.find_one({"id":payload['id']})
+        user_info = db.info.find_one({"id":payload['id']})
 
         doc = {
         'post_id' : post_id,
@@ -154,10 +167,10 @@ token_receive = request.cookies.get('mytoken')
 
         return jsonify({'post_like_msg':'게시글 좋아요 완료'})
 
-    except jwt.ExpiredSignatureError:
+   except jwt.ExpiredSignatureError:
         return render_template('lecture.html', result='fail', msg='만료된 토큰')
 
-    except jwt.exceptions.DecodeError:
+   except jwt.exceptions.DecodeError:
         return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
 
 # -----게시글 수정 기능
@@ -167,34 +180,33 @@ def post_update():
     update_receive = ['update_give']
     db.gugupost.update_one({'memberid': member_id}, {'$set': {'post_desc': str(update_receive)}})
 
-   return jsonify({'post_up_msg': '게시글 수정 완료'})
+    return jsonify({'post_up_msg': '게시글 수정 완료'})
 
 # -----게시글 삭제 기능
 @app.route("/posting/delete", methods=["POST"])
 def post_remove():
 
-token_receive = request.cookies.get('mytoken')
+   token_receive = request.cookies.get('mytoken')
+   try:
+      payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+      user_info = db.info.find_one({"id": payload['id']})
+      object_id_receive = request.form['object_id_give']
+      writer = db.gugupost.find_one({'_id': ObjectId(object_id_receive)})['member_id']
 
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = member_db.find_one({"id": payload['id']})
-    object_id_receive = request.form['object_id_give']
-    writer = db.gugupost.find_one({'_id': ObjectId(object_id_receive)})['member_id']
 
+      if user_info['member_id'] == writer:
+         db.comment.delete_one({'_id': ObjectId(object_id_receive)})
+         return jsonify({'post_rm_msg': '게시글 삭제 완료'})
+      else:
+         return jsonify({'msg': '다른 사람이 쓴 글은 삭제할 수 없습니다.'})
 
-    if user_info['member_id'] == writer:
-        db.comment.delete_one({'_id': ObjectId(object_id_receive)})
-        return jsonify({'post_rm_msg': '게시글 삭제 완료'})
-    else:
-        return jsonify({'msg': '다른 사람이 쓴 글은 삭제할 수 없습니다.'})
+   except jwt.ExpiredSignatureError:
 
-    except jwt.ExpiredSignatureError:
+      return render_template('editorTemplate.html', result ='fail',msg='만료된 토큰')
 
-        return render_template('editorTemplate.html', result ='fail',msg='만료된 토큰')
+   except jwt.exceptions.DecodeError:
 
-    except jwt.exceptions.DecodeError:
-
-        return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
+         return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
 
 
 @app.route('/comment', methods=["POST"])
