@@ -73,7 +73,7 @@ def register():
          return jsonify({'result': 'success', "msg":"회원가입이 완료됐습니다."})
       else:
          return jsonify({'msg': '이미 존재하는 아이디 입니다.'})
-   
+    
 # -----글쓰기 페이지로 이동
 def post_write():
 
