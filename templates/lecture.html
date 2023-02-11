@@ -133,6 +133,106 @@
                 }
             }
         };
+        function show_comment(){
+            $('#commenttxt').empty()
+        $.ajax({
+            type: 'GET',
+            url: '/comment',
+            data: {},
+                success: function (response) {
+                let rows = response['comments']
+                    for (let i = 0; i < rows.length; i++){
+                        let member_id = rows[i]['member_id']
+                        let comment = rows[i]['comment']
+                        // let num = rows[i]['Num']
+                        let temp_html = `<div>
+                                    <div style="max-width: 540px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-3" style="margin-right: -30px">
+                                                <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
+                                                     class="img-fluid rounded-start"
+                                                     alt="...">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${member_id}</h5>
+                                                    <p class="card-text"><small class="text-muted">1000👍👍
+                                                    </small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">
+                                        ${comment}
+                                    </p>
+                                    <div style="margin-right: 5%"><br>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👍
+                                        </button>
+                                        <span>3점</span>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👎
+                                        </button>
+                                    </div>
+                                </div> `
+
+                        $('#coomettxt').append(temp_html)
+                    }
+                }
+            });
+    }
+    function write_comment(){
+        let comment = $('#editor').val()
+        // let member_id = $('#member_id').val()
+
+        if (comment == ""){
+            alert("댓글을 입력하세요.")
+        }else {
+            $.ajax({
+            type: 'POST',
+            url: '/comment',
+            data: {comment_give: comment},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+
+    }
+    function comment_update(num) {
+    let update = prompt("내용을 입력해주세요.")
+    $.ajax({
+        type: "POST",
+        url: "/comment/update",
+        data: {
+            num_give : num,
+            edited_give: update,
+        },
+        success: function (response) {
+            alert(response['msg'])
+            window.location.reload()
+        }
+
+    })
+}
+function comment_delete(num) {
+    if (confirm("삭제하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/comment/delete",
+            data: {
+                num_give: num,
+            },
+            success: function (response) {
+                alert(response['msg'])
+                window.location.reload()
+            }
+
+        })
+    }
+}
     </script>
     <div header="headerTemplate.html"></div>
 
@@ -172,7 +272,7 @@
                         <div>
                             <div class="card-body p-4">
                                 <div class="d-flex flex-start">
-                                    <div>
+                                    <div id="commenttxt">
                                         <h3 class="fw-bold mb-1">제목</h3><br>
                                         <p class="mb-0">
                                             Contrary to popular belief, Lorem Ipsum is not simply random text. It
@@ -285,7 +385,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="card-body">
-                                            <h5 class="card-title">Member Id</h5>
+                                            <h5 id="member_id" class="card-title">Member Id</h5>
                                             <p class="card-text"><small class="text-muted">1000👍👍
                                             </small></p>
                                         </div>
@@ -297,7 +397,7 @@
 
                             <div class="pt-3">
                                 <button class="btn btn-outline-success" type="button" style="margin-right: 10%;"
-                                        onclick="check()">댓글 등록
+                                        onclick="write_comment()">댓글 등록
                                 </button>
                             </div>
                             <input type="hidden" header="/static/testText.txt" id="text">
