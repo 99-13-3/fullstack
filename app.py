@@ -24,7 +24,7 @@ SECRET_KEY = 'FLOW'
 def home():
    token_receive = request.cookies.get('myToken')
    print(token_receive)
-   
+
    try:
       payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
       user_info = db.info.find_one({"id": payload['id']})
@@ -43,11 +43,11 @@ def login_get():
 def login_post():
    id_receive = request.form['id_check']
    pw_receive = request.form['pw_check']
-   
+
    pw_hash =hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-   
+
    result = db.flow99.find_one({'id': id_receive, 'pw':pw_hash})
-   
+
    if result is not None:
       payload = {
          'id': id_receive,
@@ -58,14 +58,14 @@ def login_post():
    else:
       return jsonify({'result':'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
    # request.args.get("msg")은 받은 내용을 json형식의 데이터로 리턴하기 위해 사용
-   
+
 # 회원가입 API
 @app.route('/register')
 def register_after():
       return render_template('loginAfter.html')
-    
+
 @app.route('/register', methods = ["POST"])
-def register(): 
+def register():
       id_receive = request.form['id_give']
       pw_receive = request.form['pw_give']
       # email_receive = request.form['email_give']
@@ -84,12 +84,10 @@ def register():
 # -----글쓰기 페이지로 이동
 def post_write():
 
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = flow99.find_one({"id": payload['id']})
-        object_id_receive = request.form['object_id_give']
 
         return render_template('editorTemplate.html')
 
@@ -127,14 +125,14 @@ def post_done():
 @app.route("/posting/list", methods=["GET"])
 def post_list():
 
-    게시글묶음 = list(db.gugupost.find({}, {'_id':False}))
+    posting_list = list(db.gugupost.find({}, {'_id':False}))
 
-    return jsonify({'poting_list': 게시글묶음})
+    return jsonify({'posting_list': posting_list})
 
 # ------ 게시글 좋아요/싫어요
 @app.route("/posting/like", methods=["GET"])
 def post_like():
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         post_id = int(request.form['post_id'])
@@ -171,7 +169,7 @@ def post_update():
 @app.route("/posting/delete", methods=["POST"])
 def post_remove():
 
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -263,6 +261,7 @@ def get_comment():
 # 댓글 수정
 @app.route('/comment/update', methods=["POST"])
 def post_comment_update():
+
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -278,6 +277,7 @@ def post_comment_update():
         else:
             return jsonify({'msg': '다른 사람이 쓴 댓글은 수정할 수 없습니다.'})
     except jwt.ExpiredSignatureError:
+
         return render_template('lecture.html', result="fail", msg="만료된 토큰")
     except jwt.exceptions.DecodeError:
         return render_template('lecture.html', result="fail", msg="존재하지 않는 아이디")
@@ -301,7 +301,6 @@ def post_comment_delete():
         return render_template('lecture.html', result="fail", msg="만료된 토큰")
     except jwt.exceptions.DecodeError:
         return render_template('lecture.html', result="fail", msg="존재하지 않는 아이디")
-
 
 # 좋아요 싫어요
 
