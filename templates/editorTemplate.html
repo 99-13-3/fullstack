@@ -141,9 +141,10 @@
                 $.ajax({
                     type: "POST",
                     url: "/posting",
-                    data: {post_title: title, post_desc: desc, member_id: member_id},
+                    data: {title: title, desc: desc, member_id: member_id},
                     success: function (response) {
-                        console.log(response["posting_msg"])
+                        alert(response['msg'])
+                        window.location.replace('/index')
 
                     }
                 });
