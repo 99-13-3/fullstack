@@ -1,14 +1,15 @@
 
 from flask import Flask, render_template, request, jsonify
-import certifi
-from pymongo import MongoClient
+
+# from pymongo import MongoClient
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.phw7iou.mongodb.net/Cluster0?retryWrites=true&w=majority')
+# db = client.dbsparta
+
 import jwt
 
 app = Flask(__name__)
 
-ca=certifi.where()
-client = MongoClient('',tlsCAFile=ca)
-db=client.db99
+
 
 @app.route('/')
 def home():
