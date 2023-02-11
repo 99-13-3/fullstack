@@ -101,6 +101,12 @@ def post_comment_update():
    db.comment.update_one({'_id': member_id}, {'$set': {'comment': str(update_receive)}})
    return jsonify({'msg': '댓글 수정'})
 
+
+@app.route('/content/post_id', method=['GET'])
+def show_content():
+   
+   return jsonify({'msg':'게시글 끌어오기 완료!'})
+
 # @app.route('/review/delete', methods=["POST"])
 # def post_comment_delete():
 #     token_receive = request.cookies.get('mytoken')
@@ -119,7 +125,6 @@ def post_comment_update():
 #         return render_template('댓글.html', result="fail", msg="만료된 토큰")
 #     except jwt.exceptions.DecodeError:
 #         return render_template('댓글.html', result="fail", msg="존재하지 않는 아이디")
-
 
 
 if __name__ == '__main__':
