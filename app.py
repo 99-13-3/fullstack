@@ -93,9 +93,6 @@ def post_write():
 
     token_receive = request.cookies.get('mytoken')
 
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
 
 @app.route('/posting')
 def posting_get():
