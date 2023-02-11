@@ -9,6 +9,7 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
         <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
 <body div class="container">
 <style>
@@ -16,6 +17,11 @@
 
     body {
         font-family: 'Noto Sans KR', sans-serif;
+    }
+
+
+    .rating-label {
+
     }
 
     /* Rating bar width */
@@ -82,7 +88,7 @@
     }
 
     button {
-        color: red !important;
+    !important;
     }
 
 
@@ -128,19 +134,86 @@
                 }
             }
         };
-        function show_comment(){
-            $('#commenttxt').empty()
-        $.ajax({
-            type: 'GET',
-            url: '/comment',
-            data: {},
+    </script>
+    <div header="headerTemplate.html"></div>
+
+    <script>
+        includeHTML();
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            get_posting();
+        });
+
+        function post_like() {
+
+
+            $.ajax({
+                type: "POST",
+                url: "/posting/like",
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check: true},
                 success: function (response) {
-                let rows = response['comments']
-                    for (let i = 0; i < rows.length; i++){
-                        let member_id = rows[i]['member_id']
-                        let comment = rows[i]['comment']
-                        // let num = rows[i]['Num']
-                        let temp_html = `<div>
+                    window.location.reload()
+                }
+            });
+
+        }
+
+        function post_dislike() {
+
+            $.ajax({
+                type: "POST",
+                url: "/posting/dislike",
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check: false},
+                success: function (response) {
+                    window.location.reload()
+                }
+            });
+        }
+
+        function comment_dislike() {
+
+            $.ajax({
+                type: "POST",
+                url: "/comment/like",
+                data: {member_id: $('#user_id').val(), comment_id: $('#post_id').val(), check: false},
+                success: function (response) {
+                    window.location.reload()
+                }
+            });
+        }
+
+
+        function get_posting() {
+            $.ajax({
+                type: "GET",
+                url: "/content/post_id",
+                data: {},
+                success: function (response) {
+                    let title = response['post_title']
+                    let desc = response[' post_desc']
+                    let post_id = response['pose_id']
+
+                    let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
+                    let temp_desc = `<p class="mb-0">${desc}</p>`
+
+
+                    $('#post_title').append(temp_title)
+                    $('#post_desc').append(temp_desc)
+                    $('#post_id').append(post_id)
+
+                    let comment_list = response['comment_list']
+
+                    for (let i = 0; i < comment_list.length; i++) {
+
+                        let comment = comment_list[i]['comment']
+                        let member_id = comment_list[i]['member_id']
+
+                        let temp = `<div class="d-flex flex-start">
+
+                                <div>
                                     <div style="max-width: 540px;">
                                         <div class="row g-0">
                                             <div class="col-md-3" style="margin-right: -30px">
@@ -169,78 +242,97 @@
                                             👎
                                         </button>
                                     </div>
-                                </div> `
+                                </div>
+                            </div>
+                            <br>
+                            <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
+                    `
 
-                        $('#coomettxt').append(temp_html)
+                        $('#comment_box').append(temp)
+
+
+                        let temp_comment = `<div style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-2">
+                                        <img src="https://mllmu3qmmprr.i.optimole.com/w:1000/h:1000/q:mauto/f:avif/https://www.singaporecodingclub.com/wp-content/uploads/2022/05/Node.png"
+                                             class="img-fluid rounded-start"
+                                             alt="...">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Member Id</h5>
+                                            <p class="card-text"><small class="text-muted">1000👍👍
+                                            </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+
+                        $('#').append()
+
                     }
+
                 }
             });
-    }
-    function write_comment(){
-        let comment = $('#editor').val()
-        // let member_id = $('#member_id').val()
+        }
 
-        if (comment == ""){
-            alert("댓글을 입력하세요.")
-        }else {
+        function get_comment() {
             $.ajax({
-            type: 'POST',
-            url: '/comment',
-            data: {comment_give: comment},
+                type: "GET",
+                url: "/content/post_id",
+                data: {},
                 success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
+                    let title = response['post_title']
+                    let desc = response[' post_desc']
+                    let post_id = response['pose_id']
+
+                    let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
+                    let temp_desc = `<p class="mb-0">${desc}</p>`
+
+
+                    $('#post_title').append(temp_title)
+                    $('#post_desc').append(temp_desc)
+                    $('#post_id').append(post_id)
                 }
             });
         }
 
+        function get_posting_test() {
+            let title = "제목입니다"
+            let desc = "내용입니다"
+            let score = 10
+            let post_id = 100
 
-    }
-    function comment_update(num) {
-    let update = prompt("내용을 입력해주세요.")
-    $.ajax({
-        type: "POST",
-        url: "/comment/update",
-        data: {
-            num_give : num,
-            edited_give: update,
-        },
-        success: function (response) {
-            alert(response['msg'])
-            window.location.reload()
+            let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${'title'}</h3><br>`
+            let temp_desc = `<p class="mb-0">${'desc'}</p>`
+
+
+            $('#post_title').append(temp_title)
+            $('#post_desc').append(temp_desc)
+            $('#like_score').text(score)
+            $('#post_id').append(post_id)
         }
 
-    })
-}
-function comment_delete(num) {
-    if (confirm("삭제하시겠습니까?")) {
-        $.ajax({
-            type: "POST",
-            url: "/comment/delete",
-            data: {
-                num_give: num,
-            },
-            success: function (response) {
-                alert(response['msg'])
-                window.location.reload()
-            }
+        function load_member() {
+            $.ajax({
+                type: "get",
+                url: "/comment/member",
+                data: {},
+                success: function (response) {
+                    let member_id = response['login_member_id']
 
-        })
-    }
-}
-    </script>
-    <div header="headerTemplate.html"></div>
+                    $('#comment_m_id_hidden').append(member_id)
 
-    <script>
-        includeHTML();
-    </script>
+                }
+            });
+        }
 
-    <script>
     </script>
 
 </header>
 <!--main-->
 <div class="container" style="margin-top: 8%">
+    <button type="button" onclick="get_posting_test()">테스트</button>
     <section>
         <div class="container my-5 py-1">
             <div class="row d-flex justify-content-center">
@@ -266,22 +358,23 @@ function comment_delete(num) {
                         <div>
                             <div class="card-body p-4">
                                 <div class="d-flex flex-start">
-                                    <div id="commenttxt">
-                                        <h3 class="fw-bold mb-1">제목</h3><br>
-                                        <p class="mb-0">
-                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                                            has roots in a piece of classical Latin literature from 45 BC, making it
-                                            over 2000 years old. Richard McClintock, a Latin professor at
-                                            Hampden-Sydney College in Virginia, looked up one of the more obscure
-                                            Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                                            the cites.
-                                        </p>
+                                    <div>
+                                        <div id="post_title">
+
+                                        </div>
+                                        <div id="post_desc">
+
+                                        </div>
+                                        <div id="post_id" hidden="hidden">
+
+                                        </div>
+
                                         <div style="margin-right: 5%"><br>
                                             <button class="btn btn-outline-success" data-bs-toggle="collapse"
                                                     type="submit">
                                                 👍
                                             </button>
-                                            <span>3점</span>
+                                            <span id="like_score"></span>
                                             <button class="btn btn-outline-success" data-bs-toggle="collapse"
                                                     type="submit">
                                                 👎
@@ -303,7 +396,7 @@ function comment_delete(num) {
     <div class="container my-5 py-1">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10">
-              <h3>댓글</h3><br>
+                <h3>댓글</h3><br>
                 <p>지식 나눔으로 도와주세요!</p>
             </div>
         </div>
@@ -316,47 +409,8 @@ function comment_delete(num) {
                 <div class="col-md-12 col-lg-10">
                     <div class="card text-dark">
                         <hr class="my-0"/>
-                        <div class="card-body p-4">
-                            <div class="d-flex flex-start">
+                        <div class="card-body p-4" id="comment_box">
 
-                                <div>
-                                    <div style="max-width: 540px;">
-                                        <div class="row g-0">
-                                            <div class="col-md-3" style="margin-right: -30px">
-                                                <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
-                                                     class="img-fluid rounded-start"
-                                                     alt="...">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Member Id</h5>
-                                                    <p class="card-text"><small class="text-muted">1000👍👍
-                                                    </small></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mb-0">
-                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                                        has roots in a piece of classical Latin literature from 45 BC, making it
-                                        over 2000 years old. Richard McClintock, a Latin professor at
-                                        Hampden-Sydney College in Virginia, looked up one of the more obscure
-                                        Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                                        the cites.
-                                    </p>
-                                    <div style="margin-right: 5%"><br>
-                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
-                                            👍
-                                        </button>
-                                        <span>3점</span>
-                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
-                                            👎
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
                         </div>
                         <hr class="my-0" style="height: 1px;"/>
                     </div>
@@ -379,19 +433,22 @@ function comment_delete(num) {
                                     </div>
                                     <div class="col-md-4">
                                         <div class="card-body">
-                                            <h5 id="member_id" class="card-title">Member Id</h5>
+                                            <h5 class="card-title">Member Id</h5>
                                             <p class="card-text"><small class="text-muted">1000👍👍
                                             </small></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div id="comment_m_id_hidde" hidden="hidden">
+
+                            </div>
                             <div id="editor"></div>
                             <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
                             <div class="pt-3">
                                 <button class="btn btn-outline-success" type="button" style="margin-right: 10%;"
-                                        onclick="write_comment()">댓글 등록
+                                        onclick="comment_register()">댓글 등록
                                 </button>
                             </div>
                             <input type="hidden" header="/static/testText.txt" id="text">
@@ -414,12 +471,31 @@ function comment_delete(num) {
                                     editor.setHTML(document.querySelector("#text").firstChild.data + "");
                                     editor.setHTML('1F606');
 
+
+
                                 }
 
                                 function read() {
 
-                                    console.log(editor.getMarkdown());
-                                    editor.getHTML();
+
+
+
+                                }
+
+                                function comment_register() {
+                                    let comment_desc = editor.getMarkdown()
+                                    let member_id = $('#member_id_hidden').val()
+                                    let post_id = $('#post_id').val()
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/comment",
+                                        data: {comment_desc : comment_desc, member_id : member_id, post_id: post_id },
+                                        success: function (response) {
+                                            console.log(response["posting_msg"])
+
+                                        }
+                                    });
 
                                 }
 
