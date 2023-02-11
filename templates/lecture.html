@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>99Flow</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+              rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+        <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    </head>
+<body div class="container">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Dongle&family=East+Sea+Dokdo&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@500&display=swap');
+
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+
+    .rating-label {
+
+    }
+
+    /* Rating bar width */
+    .rating-bar {
+        width: 80%;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    /* The bar container */
+    .bar-container {
+        width: 100%;
+        background-color: #f1f1f1;
+        text-align: center;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-bottom: 5px;
+    }
+
+    /* Individual bars */
+    .bar-5 {
+        width: 100%;
+        height: 13px;
+        background-color: #FBC02D;
+        border-radius: 20px;
+
+    }
+
+    .bar-4 {
+        width: 30%;
+        height: 13px;
+        background-color: #FBC02D;
+        border-radius: 20px;
+
+    }
+
+    .bar-3 {
+        width: 20%;
+        height: 13px;
+        background-color: #FBC02D;
+        border-radius: 20px;
+
+    }
+
+    .bar-2 {
+        width: 10%;
+        height: 13px;
+        background-color: #FBC02D;
+        border-radius: 20px;
+
+    }
+
+    .bar-1 {
+        width: 0%;
+        height: 13px;
+        background-color: #FBC02D;
+        border-radius: 20px;
+
+    }
+
+    td {
+        padding-bottom: 10px;
+    }
+
+    button {
+    !important;
+    }
+
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous">
+</script>
+</body>
+</head>
+<body>
+<header>
+    <script>
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /*loop through a collection of all HTML elements:*/
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain attribute:*/
+                file = elmnt.getAttribute("header");
+                if (file) {
+                    /*make an HTTP request using the attribute value as the file name:*/
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) {
+                                elmnt.innerHTML = this.responseText;
+                            }
+                            if (this.status == 404) {
+                                elmnt.innerHTML = "Page not found.";
+                            }
+                            /*remove the attribute, and call this function once more:*/
+                            elmnt.removeAttribute("header");
+                            includeHTML();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /*exit the function:*/
+                    return;
+                }
+            }
+        };
+    </script>
+    <div header="headerTemplate.html"></div>
+
+    <script>
+        includeHTML();
+    </script>
+
+    <script>
+
+    </script>
+
+</header>
+<!--main-->
+<div class="container" style="margin-top: 8%">
+    <section>
+        <div class="container my-5 py-1">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="card text-dark">
+                        <div style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-3" style="margin-right: -30px">
+                                    <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
+                                         class="img-fluid rounded-start"
+                                         alt="...">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Member Id</h5>
+                                        <p class="card-text"><small class="text-muted">1000👍👍
+                                        </small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start">
+                                    <div>
+                                        <h3 class="fw-bold mb-1">제목</h3><br>
+                                        <p class="mb-0">
+                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It
+                                            has roots in a piece of classical Latin literature from 45 BC, making it
+                                            over 2000 years old. Richard McClintock, a Latin professor at
+                                            Hampden-Sydney College in Virginia, looked up one of the more obscure
+                                            Latin words, consectetur, from a Lorem Ipsum passage, and going through
+                                            the cites.
+                                        </p>
+                                        <div style="margin-right: 5%"><br>
+                                            <button class="btn btn-outline-success" data-bs-toggle="collapse"
+                                                    type="submit">
+                                                👍
+                                            </button>
+                                            <span>3점</span>
+                                            <button class="btn btn-outline-success" data-bs-toggle="collapse"
+                                                    type="submit">
+                                                👎
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <hr class="my-0" style="height: 1px;"/>
+                            <hr class="my-0"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container my-5 py-1">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10">
+              <h3>댓글</h3><br>
+                <p>지식 나눔으로 도와주세요!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <section>
+        <div class="container my-5 py-1">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="card text-dark">
+                        <hr class="my-0"/>
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-start">
+
+                                <div>
+                                    <div style="max-width: 540px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-3" style="margin-right: -30px">
+                                                <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
+                                                     class="img-fluid rounded-start"
+                                                     alt="...">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Member Id</h5>
+                                                    <p class="card-text"><small class="text-muted">1000👍👍
+                                                    </small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">
+                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It
+                                        has roots in a piece of classical Latin literature from 45 BC, making it
+                                        over 2000 years old. Richard McClintock, a Latin professor at
+                                        Hampden-Sydney College in Virginia, looked up one of the more obscure
+                                        Latin words, consectetur, from a Lorem Ipsum passage, and going through
+                                        the cites.
+                                    </p>
+                                    <div style="margin-right: 5%"><br>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👍
+                                        </button>
+                                        <span>3점</span>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👎
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
+                        </div>
+                        <hr class="my-0" style="height: 1px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container my-5 py-1">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="card text-dark">
+                        <form>
+                            <div style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-2">
+                                        <img src="https://mllmu3qmmprr.i.optimole.com/w:1000/h:1000/q:mauto/f:avif/https://www.singaporecodingclub.com/wp-content/uploads/2022/05/Node.png"
+                                             class="img-fluid rounded-start"
+                                             alt="...">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Member Id</h5>
+                                            <p class="card-text"><small class="text-muted">1000👍👍
+                                            </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="editor"></div>
+                            <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+                            <div class="pt-3">
+                                <button class="btn btn-outline-success" type="button" style="margin-right: 10%;"
+                                        onclick="check()">댓글 등록
+                                </button>
+                            </div>
+                            <input type="hidden" header="/static/testText.txt" id="text">
+
+                            <script>
+                                includeHTML();
+                                const Editor = toastui.Editor;
+
+                                const editor = new Editor({
+                                    el: document.querySelector('#editor'),
+                                    height: '200px',
+                                    initialEditType: 'wysiwyg',
+                                    previewStyle: 'vertical'
+
+                                });
+
+
+                                function check() {
+
+                                    editor.setHTML(document.querySelector("#text").firstChild.data + "");
+                                    editor.setHTML('1F606');
+
+                                }
+
+                                function read() {
+
+                                    console.log(editor.getMarkdown());
+                                    editor.getHTML();
+
+                                }
+
+
+                            </script>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+</body>
