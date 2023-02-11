@@ -153,7 +153,7 @@
             $.ajax({
                 type: "POST",
                 url: "/posting/like",
-                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check : true },
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check: true},
                 success: function (response) {
                     window.location.reload()
                 }
@@ -166,7 +166,7 @@
             $.ajax({
                 type: "POST",
                 url: "/posting/dislike",
-                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check : false },
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check: false},
                 success: function (response) {
                     window.location.reload()
                 }
@@ -178,7 +178,7 @@
             $.ajax({
                 type: "POST",
                 url: "/comment/like",
-                data: {member_id: $('#user_id').val(), comment_id: $('#post_id').val(), check : false },
+                data: {member_id: $('#user_id').val(), comment_id: $('#post_id').val(), check: false},
                 success: function (response) {
                     window.location.reload()
                 }
@@ -186,33 +186,32 @@
         }
 
 
-
-        function get_posting(){
+        function get_posting() {
             $.ajax({
-            type: "GET",
-            url: "/content/post_id",
-            data: {},
-            success: function (response) {
-                let title = response['post_title']
-                let desc = response[' post_desc']
-                let post_id = response['pose_id']
+                type: "GET",
+                url: "/content/post_id",
+                data: {},
+                success: function (response) {
+                    let title = response['post_title']
+                    let desc = response[' post_desc']
+                    let post_id = response['pose_id']
 
-                let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
-                let temp_desc = `<p class="mb-0">${desc}</p>`
+                    let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
+                    let temp_desc = `<p class="mb-0">${desc}</p>`
 
 
-                $('#post_title').append(temp_title)
-                $('#post_desc').append(temp_desc)
-                $('#post_id').append(post_id)
+                    $('#post_title').append(temp_title)
+                    $('#post_desc').append(temp_desc)
+                    $('#post_id').append(post_id)
 
-                let comment_list = response['comment_list']
+                    let comment_list = response['comment_list']
 
-                for(let i=0; i<comment_list.length; i++){
+                    for (let i = 0; i < comment_list.length; i++) {
 
-                    let comment = comment_list[i]['comment']
-                    let member_id = comment_list[i]['member_id']
+                        let comment = comment_list[i]['comment']
+                        let member_id = comment_list[i]['member_id']
 
-                    let temp = `<div class="d-flex flex-start">
+                        let temp = `<div class="d-flex flex-start">
 
                                 <div>
                                     <div style="max-width: 540px;">
@@ -249,49 +248,83 @@
                             <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
                     `
 
-                    $('#comment_box').append(temp)
+                        $('#comment_box').append(temp)
+
+
+                        let temp_comment = `<div style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-2">
+                                        <img src="https://mllmu3qmmprr.i.optimole.com/w:1000/h:1000/q:mauto/f:avif/https://www.singaporecodingclub.com/wp-content/uploads/2022/05/Node.png"
+                                             class="img-fluid rounded-start"
+                                             alt="...">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Member Id</h5>
+                                            <p class="card-text"><small class="text-muted">1000👍👍
+                                            </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+
+                        $('#').append()
+
+                    }
 
                 }
-
-            }
-        });
+            });
         }
 
-        function get_comment(){
+        function get_comment() {
             $.ajax({
-            type: "GET",
-            url: "/content/post_id",
-            data: {},
-            success: function (response) {
-                let title = response['post_title']
-                let desc = response[' post_desc']
-                let post_id = response['pose_id']
+                type: "GET",
+                url: "/content/post_id",
+                data: {},
+                success: function (response) {
+                    let title = response['post_title']
+                    let desc = response[' post_desc']
+                    let post_id = response['pose_id']
 
-                let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
-                let temp_desc = `<p class="mb-0">${desc}</p>`
+                    let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
+                    let temp_desc = `<p class="mb-0">${desc}</p>`
 
 
-                $('#post_title').append(temp_title)
-                $('#post_desc').append(temp_desc)
-                $('#post_id').append(post_id)
-            }
-        });
+                    $('#post_title').append(temp_title)
+                    $('#post_desc').append(temp_desc)
+                    $('#post_id').append(post_id)
+                }
+            });
         }
 
-        function get_posting_test(){
-                let title = "제목입니다"
-                let desc = "내용입니다"
-                let score = 10
-                let post_id = 100
+        function get_posting_test() {
+            let title = "제목입니다"
+            let desc = "내용입니다"
+            let score = 10
+            let post_id = 100
 
-                let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${'title'}</h3><br>`
-                let temp_desc = `<p class="mb-0">${'desc'}</p>`
+            let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${'title'}</h3><br>`
+            let temp_desc = `<p class="mb-0">${'desc'}</p>`
 
 
-                $('#post_title').append(temp_title)
-                $('#post_desc').append(temp_desc)
-                $('#like_score').text(score)
-                $('#post_id').append(post_id)
+            $('#post_title').append(temp_title)
+            $('#post_desc').append(temp_desc)
+            $('#like_score').text(score)
+            $('#post_id').append(post_id)
+        }
+
+        function load_member() {
+            $.ajax({
+                type: "get",
+                url: "/comment/member",
+                data: {},
+                success: function (response) {
+                    let member_id = response['login_member_id']
+
+                    $('#comment_m_id_hidden').append(member_id)
+
+                }
+            });
         }
 
     </script>
@@ -363,7 +396,7 @@
     <div class="container my-5 py-1">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10">
-              <h3>댓글</h3><br>
+                <h3>댓글</h3><br>
                 <p>지식 나눔으로 도와주세요!</p>
             </div>
         </div>
@@ -407,12 +440,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="comment_m_id_hidde" hidden="hidden">
+
+                            </div>
                             <div id="editor"></div>
                             <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
                             <div class="pt-3">
                                 <button class="btn btn-outline-success" type="button" style="margin-right: 10%;"
-                                        onclick="check()">댓글 등록
+                                        onclick="comment_register()">댓글 등록
                                 </button>
                             </div>
                             <input type="hidden" header="/static/testText.txt" id="text">
@@ -441,6 +477,23 @@
 
                                     console.log(editor.getMarkdown());
                                     editor.getHTML();
+
+                                }
+
+                                function comment_register() {
+                                    let comment_desc = editor.getMarkdown()
+                                    let member_id = $('#member_id_hidden').val()
+                                    let post_id = $('#post_id').val()
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/comment",
+                                        data: {comment_desc : comment_desc, member_id : member_id, post_id: post_id },
+                                        success: function (response) {
+                                            console.log(response["posting_msg"])
+
+                                        }
+                                    });
 
                                 }
 
