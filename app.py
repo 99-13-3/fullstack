@@ -46,11 +46,24 @@ def post_comment_update():
    db.comment.update_one({'_id': member_id}, {'$set': {'comment': str(update_receive)}})
    return jsonify({'msg': '댓글 수정'})
 
-@app.route('/review/delete', methods=["POST"])
-def post_comment_delete():
-    member_id = request.form['member_id']
-    db.comment.delete_one({'_id': member_id})
-    return jsonify({'msg': '댓글 삭제'})
+# @app.route('/review/delete', methods=["POST"])
+# def post_comment_delete():
+#     token_receive = request.cookies.get('mytoken')
+#
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         user_info = member_db.find_one({"id": payload['id']})
+#     object_id_receive = request.form['object_id_give']
+#     writer = db.comment.find_one({'_id': ObjectId(object_id_receive)})['member_id']
+#     if user_info['member_id'] == writer:
+#         db.comment.delete_one({'_id': ObjectId(object_id_receive)})
+#         return jsonify({'msg': '리뷰 삭제'})
+#     else:
+#         return jsonify({'msg': '다른 사람이 쓴 글은 삭제할 수 없습니다.'})
+#     except jwt.ExpiredSignatureError:
+#         return render_template('댓글.html', result="fail", msg="만료된 토큰")
+#     except jwt.exceptions.DecodeError:
+#         return render_template('댓글.html', result="fail", msg="존재하지 않는 아이디")
 
 
 
