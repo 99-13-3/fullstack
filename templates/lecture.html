@@ -142,6 +142,51 @@
     </script>
 
     <script>
+
+        $(document).ready(function () {
+            get_posting();
+        });
+
+        function post_like() {
+
+
+            $.ajax({
+                type: "POST",
+                url: "/posting/like",
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check : true },
+                success: function (response) {
+                    window.location.reload()
+                }
+            });
+
+        }
+
+        function post_dislike() {
+
+            $.ajax({
+                type: "POST",
+                url: "/posting/dislike",
+                data: {member_id: $('#user_id').val(), post_id: $('#post_id').val(), check : false },
+                success: function (response) {
+                    window.location.reload()
+                }
+            });
+        }
+
+        function comment_dislike() {
+
+            $.ajax({
+                type: "POST",
+                url: "/comment/like",
+                data: {member_id: $('#user_id').val(), comment_id: $('#post_id').val(), check : false },
+                success: function (response) {
+                    window.location.reload()
+                }
+            });
+        }
+
+
+
         function get_posting(){
             $.ajax({
             type: "GET",
@@ -150,6 +195,7 @@
             success: function (response) {
                 let title = response['post_title']
                 let desc = response[' post_desc']
+                let post_id = response['pose_id']
 
                 let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
                 let temp_desc = `<p class="mb-0">${desc}</p>`
@@ -157,6 +203,77 @@
 
                 $('#post_title').append(temp_title)
                 $('#post_desc').append(temp_desc)
+                $('#post_id').append(post_id)
+
+                let comment_list = response['comment_list']
+
+                for(let i=0; i<comment_list.length; i++){
+
+                    let comment = comment_list[i]['comment']
+                    let member_id = comment_list[i]['member_id']
+
+                    let temp = `<div class="d-flex flex-start">
+
+                                <div>
+                                    <div style="max-width: 540px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-3" style="margin-right: -30px">
+                                                <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
+                                                     class="img-fluid rounded-start"
+                                                     alt="...">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${member_id}</h5>
+                                                    <p class="card-text"><small class="text-muted">1000👍👍
+                                                    </small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">
+                                        ${comment}
+                                    </p>
+                                    <div style="margin-right: 5%"><br>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👍
+                                        </button>
+                                        <span>3점</span>
+                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
+                                            👎
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
+                    `
+
+                    $('#comment_box').append(temp)
+
+                }
+
+            }
+        });
+        }
+
+        function get_comment(){
+            $.ajax({
+            type: "GET",
+            url: "/content/post_id",
+            data: {},
+            success: function (response) {
+                let title = response['post_title']
+                let desc = response[' post_desc']
+                let post_id = response['pose_id']
+
+                let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${title}</h3><br>`
+                let temp_desc = `<p class="mb-0">${desc}</p>`
+
+
+                $('#post_title').append(temp_title)
+                $('#post_desc').append(temp_desc)
+                $('#post_id').append(post_id)
             }
         });
         }
@@ -165,6 +282,7 @@
                 let title = "제목입니다"
                 let desc = "내용입니다"
                 let score = 10
+                let post_id = 100
 
                 let temp_title = `<h3 class="fw-bold mb-1" id="post_title">${'title'}</h3><br>`
                 let temp_desc = `<p class="mb-0">${'desc'}</p>`
@@ -173,6 +291,7 @@
                 $('#post_title').append(temp_title)
                 $('#post_desc').append(temp_desc)
                 $('#like_score').text(score)
+                $('#post_id').append(post_id)
         }
 
     </script>
@@ -211,6 +330,9 @@
 
                                         </div>
                                         <div id="post_desc">
+
+                                        </div>
+                                        <div id="post_id" hidden="hidden">
 
                                         </div>
 
@@ -254,47 +376,8 @@
                 <div class="col-md-12 col-lg-10">
                     <div class="card text-dark">
                         <hr class="my-0"/>
-                        <div class="card-body p-4">
-                            <div class="d-flex flex-start">
+                        <div class="card-body p-4" id="comment_box">
 
-                                <div>
-                                    <div style="max-width: 540px;">
-                                        <div class="row g-0">
-                                            <div class="col-md-3" style="margin-right: -30px">
-                                                <img src="https://dwglogo.com/wp-content/uploads/2017/12/Spring_Framework_logo_01.png"
-                                                     class="img-fluid rounded-start"
-                                                     alt="...">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Member Id</h5>
-                                                    <p class="card-text"><small class="text-muted">1000👍👍
-                                                    </small></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mb-0">
-                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                                        has roots in a piece of classical Latin literature from 45 BC, making it
-                                        over 2000 years old. Richard McClintock, a Latin professor at
-                                        Hampden-Sydney College in Virginia, looked up one of the more obscure
-                                        Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                                        the cites.
-                                    </p>
-                                    <div style="margin-right: 5%"><br>
-                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
-                                            👍
-                                        </button>
-                                        <span>3점</span>
-                                        <button class="btn btn-outline-success" data-bs-toggle="collapse" type="submit">
-                                            👎
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <hr class="my-0" style="height: 1px; padding-bottom: 3%; margin-top: 3%"/>
                         </div>
                         <hr class="my-0" style="height: 1px;"/>
                     </div>
