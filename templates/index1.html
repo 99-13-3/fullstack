@@ -12,8 +12,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>99 flow</title>
 <script>
-
-
     // function show_comment(){
     //     $.ajax({
     //         type: 'GET',
@@ -21,14 +19,11 @@
     //         data: {},
     //             success: function (response) {
     //             let rows = response['comments']
-    //
-    //
     //                 for (let i = 0; i < rows.length; i++){
     //                     let member_id = rows[i]['member_id']
     //                     let comment = rows[i]['comment']
     //                     let num = rows[i]['Num']
     //                     let temp_html = ` `
-    //
     //                     $('#').append(temp_html)
     //                 }
     //             }
@@ -36,8 +31,6 @@
     // }
     function write_comment(){
         let comment = $('#comment').val();
-
-
         if (comment == ""){
             alert("댓글을 입력하세요.")
         }else {
@@ -51,9 +44,6 @@
                 }
             });
         }
-
-
-
     }
 
 //     function comment_update(num) {
