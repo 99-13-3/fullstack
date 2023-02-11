@@ -68,27 +68,43 @@
     function get_Qna_list() {
         $.ajax({
             type: "GET",
-            url: "/bucket",
+            url: "/posting/list",
             data: {},
             success: function (response) {
 
                 let page_limit = 10;
 
-                let qnaList = response['buckets']
+                let qnaList = response['posting_list']
 
-                if ()
+                for (let i = 0; i < qnaList.length; i++) {
+                    let post_title = qnaList[i]['post_title']
+                    let member_id = qnaList[i]['member_id']
 
-                    for (let i = 0; i < buckets.length; i++) {
-                        let bucket = buckets[i]['bucket']
-                        let num = buckets[i]['num']
-                        let done = buckets[i]['done']
+                    let temp = `<tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-5">
+                                                    <a class="fw-bold mb-1" href="lecture.html"
+                                                       style="text-decoration: none; color: inherit;">${post_title}</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fw-normal mb-1">${member_id}</p>
+                                        </td>
+                                    </tr>`
 
-                    }
+                    $('#Qna_list').append(temp)
+
+                }
+
+
             }
         });
     }
 
     function get_login_page() {
+
         $.ajax({
             type: "GET",
             url: "/login",
@@ -99,35 +115,47 @@
         });
     }
 
-    function get_Qna_list() {
+    function get_Qna_list_test() {
 
-        let temp = `<tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-5">
-                                    <a class="fw-bold mb-1" href="lecture.html"
-                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="fw-normal mb-1">dignzh</p>
-                        </td>
-                    </tr>`
 
-        $.ajax({
-            type: "GET",
-            url: "/posting/list",
-            data: {},
-            success: function (response) {
+        let post1 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post2 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post3 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post4 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
 
-                let post_list = response['posting_list']
+        let posting_list = [post1, post2, post3, post4];
 
-                for(let i=0; i<post_list.length; i++){
+        Qna_list_data(posting_list)
 
-                }
-            }
-        });
+    }
+
+    function Qna_list_data(qnaList) {
+
+        console.log("hi")
+
+        console.log(qnaList.length)
+
+        for (let i = 0; i < qnaList.length; i++) {
+            let post_title = qnaList[i]['post_title']
+            let member_id = qnaList[i]['member_id']
+            let temp = `<tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-5">
+                                                    <a class="fw-bold mb-1" href="lecture.html"
+                                                       style="text-decoration: none; color: inherit;">${post_title}</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fw-normal mb-1">${member_id}</p>
+                                        </td>
+                                    </tr>`
+
+            $('#Qna_list').append(temp)
+
+        }
+
 
     }
 
@@ -172,9 +200,8 @@
                             <i class="fas fa-search"></i>
                         </span>
                         </div>
-
                     </form>
-                    <form action="/login" method="get">
+                    <form action="/login" method="post">
                         <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
                     </form>
 
@@ -193,6 +220,7 @@
                  style="text-align: center">
                 Spring is Comming
             </div>
+            <button onclick="get_Qna_list_test()">테스트</button>
 
             <p style="margin-top: 100px">
                 <a class="move_category" href="#">질문 🚩 ></a>
@@ -204,23 +232,7 @@
                     <th>Name</th>
                 </tr>
                 </thead>
-                <tbody>
-                <div id="Qna_list">
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-5">
-                                    <a class="fw-bold mb-1" href="lecture.html"
-                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="fw-normal mb-1">dignzh</p>
-                        </td>
-                    </tr>
-                </div>
-
+                <tbody id="Qna_list">
                 </tbody>
             </table>
 
