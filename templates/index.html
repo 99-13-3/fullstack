@@ -32,7 +32,7 @@
         font-family: 'Noto Sans KR', sans-serif;
     }
 
-    href{
+    href {
         style: "text-decoration: none; color: inherit;
     }
 
@@ -59,6 +59,79 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous">
 </script>
+<script>
+
+    $(document).ready(function () {
+        show_bucket();
+    });
+
+    function get_Qna_list() {
+        $.ajax({
+            type: "GET",
+            url: "/bucket",
+            data: {},
+            success: function (response) {
+
+                let page_limit = 10;
+
+                let qnaList = response['buckets']
+
+                if ()
+
+                    for (let i = 0; i < buckets.length; i++) {
+                        let bucket = buckets[i]['bucket']
+                        let num = buckets[i]['num']
+                        let done = buckets[i]['done']
+
+                    }
+            }
+        });
+    }
+
+    function get_login_page() {
+        $.ajax({
+            type: "GET",
+            url: "/login",
+            data: {},
+            success: function (response) {
+
+            }
+        });
+    }
+
+    function get_Qna_list() {
+
+        let temp = `<tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="ms-5">
+                                    <a class="fw-bold mb-1" href="lecture.html"
+                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">dignzh</p>
+                        </td>
+                    </tr>`
+
+        $.ajax({
+            type: "GET",
+            url: "/posting/list",
+            data: {},
+            success: function (response) {
+
+                let post_list = response['posting_list']
+
+                for(let i=0; i<post_list.length; i++){
+
+                }
+            }
+        });
+
+    }
+
+</script>
 </body>
 
 <body>
@@ -67,7 +140,8 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
             <div class="container-fluid" style="margin-left: 10%">
-                <a class="navbar-brand" href="index.html" style="font-size: 25px; color: #00b74a; font-weight: bolder">99 Flow</a>
+                <a class="navbar-brand" href="index.html" style="font-size: 25px; color: #00b74a; font-weight: bolder">99
+                    Flow</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -100,7 +174,10 @@
                         </div>
 
                     </form>
-                    <a button class="btn btn-outline-success" style="margin-right: 10%" type="button" href="login.html">로그인</a></button>
+                    <form action="/login" method="get">
+                        <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
+                    </form>
+
                 </div>
             </div>
         </nav>
@@ -128,59 +205,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="ms-5">
-                                <a class="fw-bold mb-1" href="lecture.html" style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                <div id="Qna_list">
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="ms-5">
+                                    <a class="fw-bold mb-1" href="lecture.html"
+                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p class="fw-normal mb-1">dignzh</p>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="ms-5">
-                                <p class="fw-bold mb-1">여기에 타이틀 제목이 들어갑니다.</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p class="fw-normal mb-1">dignzh</p>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="ms-5">
-                                <p class="fw-bold mb-1">여기에 타이틀 제목이 들어갑니다.</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p class="fw-normal mb-1">dignzh</p>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="ms-5">
-                                <p class="fw-bold mb-1">여기에 타이틀 제목이 들어갑니다.</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p class="fw-normal mb-1">dignzh</p>
-                    </td>
-
-                </tr>
-
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">dignzh</p>
+                        </td>
+                    </tr>
+                </div>
 
                 </tbody>
             </table>
@@ -200,7 +239,8 @@
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="ms-5">
-                                <a class="fw-bold mb-1" href="lecture.html" style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                                <a class="fw-bold mb-1" href="lecture.html"
+                                   style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
 
                             </div>
                         </div>

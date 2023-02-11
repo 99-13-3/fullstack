@@ -1,7 +1,5 @@
 
 from flask import Flask, render_template, request, jsonify
-import jwt
-
 from pymongo import MongoClient
 client = MongoClient('mongodb+srv://test:sparta@cluster0.phw7iou.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
@@ -13,18 +11,18 @@ app = Flask(__name__)
 
 
 
-# @app.route('/')
-# def home():
-#    return render_template('index.html')
-#
-# # -----글쓰기 페이지로 이동
-# @app.route('/write', )
-# def post_upload():
-#    memberid = db.fullstack.find_one({'_id:False'})
-#    return render_template('indedx.html', memberid = memberid)
-#
-# # -----글쓰기 완료 기능
-# @app.route('/write/posting', method=["GET", "POST"])
+@app.route('/')
+def home():
+   return render_template('index.html')
+
+# -----글쓰기 페이지로 이동
+@app.route('/write', )
+def post_upload():
+   memberid = db.fullstack.find_one({'_id:False'})
+   return render_template('indedx.html', memberid = memberid)
+
+# -----글쓰기 완료 기능
+@app.route('/write/posting', method=["GET", "POST"])
 def post_upload_done():
 
       title_receive = request.form['title_give']
