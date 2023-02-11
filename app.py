@@ -1,7 +1,7 @@
 import hashlib
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session
-import certifi
+# import certifi
 from pymongo import MongoClient
 
 import jwt
@@ -88,12 +88,13 @@ def content_page():
     return render_template('lecture.html')
 
 # -----글쓰기 페이지로 이동
-def post_write():
-    token_receive = request.cookies.get('mytoken')
 
 @app.route('/posting')
 def posting_get():
     return render_template('editorTemplate.html')
+
+
+
 @app.route('/posting', methods = ["POST"])
 def post_write():
     title = request.form['title']
@@ -106,39 +107,12 @@ def post_write():
     }
     db.gugupost.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '게시글 등록 완료'})
-  
-    # token_receive = request.cookies.get('mytoken')
-    # try:
-    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    #     return render_template('editorTemplate.html')
-    #
-    #
-    # except jwt.ExpiredSignatureError:
-    #     return render_template('index.html', result='fail', msg='만료된 토큰')
-    # except jwt.exceptions.DecodeError:
-    #     return render_template('login.html', result='fail', msg='로그인 후 이용해 주십시오.')
 
-# -----게시글 올리기
-@app.route('/posting', methods=["POST"])
-def post_done():
 
-    post_title = request.form['post_title']
-    post_desc = request.form['post_desc']
-    member_id = request.form['member_key']
 
-    post_list = list(db.info.find({}, {'_id': False}))
-    post_id = post_list[len(post_list)-1]['num']
 
-    doc = {
-            'post_id': post_id,
-            'post_title': post_title,
-            'post_desc': post_desc,
-            'member_id': member_id
-        }
 
-    db.gugupost.insert_one(doc)
-
-    return jsonify({'posting_msg': '게시글 등록 완료!'})
+#
 
 @app.route('/posting_page', methods=["GET"])
 def post_page():
@@ -180,9 +154,14 @@ def post_like():
 # -----게시글 수정 기능
 @app.route("/posting/update", methods =["POST"])
 def post_update():
-    member_id = ['member_key']
-    update_receive = ['update_give']
-    db.gugupost.update_one({'memberid': member_id}, {'$set': {'post_desc': str(update_receive)}})
+
+    title = request.form['title']
+    desc = request.form['desc']
+    db.gugupost.update_one({'title': title}, {'$set': {'post_desc': str(update_receive)}})
+
+
+
+
     return jsonify({'post_up_msg': '게시글 수정 완료'})
 
 # -----게시글 삭제 기능
