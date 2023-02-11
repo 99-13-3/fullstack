@@ -83,7 +83,7 @@ def register():
 # -----글쓰기 페이지로 이동
 def post_write():
 
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -124,14 +124,14 @@ def post_done():
 @app.route("/posting/list", methods=["GET"])
 def post_list():
 
-    게시글묶음 = list(db.gugupost.find({}, {'_id':False}))
+    posting_list = list(db.gugupost.find({}, {'_id':False}))
 
-    return jsonify({'poting_list': 게시글묶음})
+    return jsonify({'posting_list': posting_list})
 
 # ------ 게시글 좋아요/싫어요
 @app.route("/posting/like", methods=["GET"])
 def post_like():
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         post_id = int(request.form['post_id'])
@@ -168,7 +168,7 @@ def post_update():
 @app.route("/posting/delete", methods=["POST"])
 def post_remove():
 
-    token_receive = request.cookies.get('mytoken')
+token_receive = request.cookies.get('mytoken')
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
