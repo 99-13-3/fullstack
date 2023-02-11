@@ -97,8 +97,8 @@
 
 
         <div class="pt-3">
-            <a button class="btn btn-outline-success" type="button" onclick="read()">취소</a></button>
-            <button class="btn btn-outline-success" type="button" style="margin-right: 10%" onclick="check()">등록</button>
+            <a button class="btn btn-outline-success" type="button" onclick="read()">등록</a></button>
+            <button class="btn btn-outline-success" type="button" style="margin-right: 10%" onclick="check()">취소</button>
         </div>
         <input type="hidden" header="/static/testText.txt" id="text">
 
@@ -118,14 +118,13 @@
             function check(){
 
                 editor.setHTML(document.querySelector("#text").firstChild.data+"");
-                editor.setHTML('1F606');
+                editor.setHTML('안녕하세요 저는 조인준입니다');
 
             }
 
             function read(){
 
                 console.log(editor.getMarkdown());
-                editor.getHTML();
 
             }
 
