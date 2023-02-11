@@ -483,14 +483,14 @@
                                 }
 
                                 function comment_register() {
-                                    let comment_desc = editor.getMarkdown()
-                                    let member_id = $('#member_id_hidden').val()
-                                    let post_id = $('#post_id').val()
+                                    let comment = editor.getMarkdown()
+                                    let member_id = $('#member_id_hidden').val
+                                    // let post_id = $('#post_id').val()
 
                                     $.ajax({
                                         type: "POST",
                                         url: "/comment",
-                                        data: {comment_desc : comment_desc, member_id : member_id, post_id: post_id },
+                                        data: {comment_give : comment, member_id : member_id },
                                         success: function (response) {
                                             console.log(response["posting_msg"])
 
