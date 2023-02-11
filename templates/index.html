@@ -106,9 +106,8 @@
                                     </tr>`
 
                     $('#Qna_list').append(temp)
-                }
             }
-        });
+        }});
     }
 
     function get_login_page() {
@@ -122,7 +121,6 @@
             }
         });
     }
-
 
     {#function get_Qna_list_test() {
 
@@ -164,6 +162,8 @@
             $('#Qna_list').append(temp)
 
         }#}
+
+
 
 
 </script>
@@ -209,14 +209,11 @@
                         </div>
                     </form>
                     <form action="/login" method="get">
-                        <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">Login</button>
-                    </form>
-                    <form action="/posting_page" method="get" style="padding-right: 10%">
-                        <button class="btn btn-outline-success" type="submit">글쓰기</button>
+                        <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
                     </form>
 
                 </div>
-
+                
             </div>
         </nav>
     </header>
@@ -231,8 +228,7 @@
                  style="text-align: center">
                 Spring is Comming
             </div>
-            <button onclick="get_Qna_list_test()" hidden="hidden">테스트</button>
-
+            <button onclick="get_Qna_list_test()">테스트</button>
 
             <p style="margin-top: 100px">
                 <a class="move_category" href="#">질문 🚩 ></a>
