@@ -9,7 +9,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/reset.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>99 flow</title>
+<script>
+
+
+    // function show_comment(){
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: '/comment',
+    //         data: {},
+    //             success: function (response) {
+    //             let rows = response['comments']
+    //
+    //
+    //                 for (let i = 0; i < rows.length; i++){
+    //                     let member_id = rows[i]['member_id']
+    //                     let comment = rows[i]['comment']
+    //                     let num = rows[i]['Num']
+    //                     let temp_html = ` `
+    //
+    //                     $('#').append(temp_html)
+    //                 }
+    //             }
+    //         });
+    // }
+    function write_comment(){
+        let comment = $('#comment').val();
+        // let member_id = $('#member_id').val()
+
+        if (comment == ""){
+            alert("댓글을 입력하세요.")
+        }else {
+            $.ajax({
+            type: 'POST',
+            url: '/comment',
+            data: {comment_give: comment},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+
+
+    }
+
+//     function comment_update(num) {
+//     let update = prompt("내용을 입력해주세요.")
+//     $.ajax({
+//         type: "POST",
+//         url: "/comment/update",
+//         data: {
+//             num_give : num,
+//             edited_give: update,
+//         },
+//         success: function (response) {
+//             alert(response['msg'])
+//             window.location.reload()
+//         }
+//
+//     })
+// }
+// function comment_delete(num) {
+//     if (confirm("삭제하시겠습니까?")) {
+//         $.ajax({
+//             type: "POST",
+//             url: "/comment/delete",
+//             data: {
+//                 num_give: num,
+//             },
+//             success: function (response) {
+//                 alert(response['msg'])
+//                 window.location.reload()
+//             }
+//
+//         })
+//     }
+// }
+</script>
 <body>
     <div class="loading">
         <header class="header_wrap">
@@ -20,10 +99,10 @@
 
         <section class="section_wrap">
         <!-- 섹션 - 페이지 중앙 -->
-        <div class="form-floating mb-3" style="color: black">
-                    <input type="email" class="form-control" id="comment" placeholder="강의후기"
+        <div id="comment1" class="form-floating mb-3" style="color: black">
+                    <input type="email" class="form-control" id="comment"
                            style="height: 150px">
-                    <label for="comment">강의에 대한 내용을 입력해주세요.</label>
+                    <label  for="comment">강의에 대한 내용을 입력해주세요.</label>
                 </div>
 
         </section>
@@ -35,86 +114,7 @@
 
 
     </div>
-    <script src="../static/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script>
-
-    $(document).ready(function () {
-            show_order();
-        });
-    function show_comment(){
-        $.ajax({
-            type: 'GET',
-            url: '/comment',
-            data: {},
-                success: function (response) {
-                let rows = response['comments']
-
-
-                    for (let i = 0; i < rows.length; i++){
-                        let member_id = rows[i]['member_id']
-                        let comment = rows[i]['comment']
-                        let num = rows[i]['Num']
-                        let temp_html = ` `
-
-                        $('#').append(temp_html)
-                    }
-                }
-            });
-    }
-    function write_comment(){
-        let comment = $('#comment').val()
-        let member_id = $('#member_id').val()
-
-        if (comment == ""){
-            alert("댓글을 입력하세요.")
-        }else {
-            $.ajax({
-            type: 'POST',
-            url: '/comment',
-            data: {comment_give: comment, member_id : member_id},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
-        }
-
-
-    }
-
-    function comment_update(num) {
-    let update = prompt("내용을 입력해주세요.")
-    $.ajax({
-        type: "POST",
-        url: "/comment/update",
-        data: {
-            num_give : num,
-            edited_give: update,
-        },
-        success: function (response) {
-            alert(response['msg'])
-            window.location.reload()
-        }
-
-    })
-}
-function comment_delete(num) {
-    if (confirm("삭제하시겠습니까?")) {
-        $.ajax({
-            type: "POST",
-            url: "/comment/delete",
-            data: {
-                num_give: num,
-            },
-            success: function (response) {
-                alert(response['msg'])
-                window.location.reload()
-            }
-
-        })
-    }
-}
