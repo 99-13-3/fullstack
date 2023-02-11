@@ -2,7 +2,7 @@ import hashlib
 
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session
-# import certifi
+import certifi
 from pymongo import MongoClient
 
 import jwt
@@ -30,8 +30,8 @@ def home():
    except jwt.exceptions.DecodeError:
       return render_template('index.html')
 
-# 로그인      
-@app.route('/login')
+# 로그인
+@app.route('/login', methods=["GET"])
 def login_get():
    return render_template('login.html')
 
@@ -41,9 +41,9 @@ def login_post():
    pw_receive = request.form['pw_check']
 
    pw_hash =hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-   
+
    result = db.info.find_one({'id': id_receive, 'pw':pw_hash})
-   
+
    if result is not None:
       payload = {
          'id': id_receive,
@@ -72,6 +72,29 @@ def register():
          return jsonify({'result': 'success', "msg":"회원가입이 완료됐습니다."})
       else:
          return jsonify({'msg': '이미 존재하는 아이디 입니다.'})
+
+@app.route('/content/post_id/info', methods=['GET'])
+def content_show():
+   titles=list(db.gugupost.find_one({},{'_id':False}))
+   post_desc=list(db.gugupost.find_one({},{'_id':False}))
+   post_key=list(db.gugupost.find_one({},{'_id':False}))
+   comments=list(db.comment.find_one({},{'_id':False}))
+   member_key=list(db.info.find_one({},{'_id':False}))
+   return jsonify({'comment_list':comments, 'post_desc':post_desc,
+                   'member_id': member_key, 'post_id': post_key,
+                   'post_title': titles})
+@app.route('/content/post_id', methods=['GET'])
+def content_page():
+    print("hello")
+    return render_template('lecture.html')
+
+# -----글쓰기 페이지로 이동
+def post_write():
+
+    token_receive = request.cookies.get('mytoken')
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
 
 @app.route('/posting')
@@ -107,8 +130,8 @@ def post_write():
 @app.route('/posting', methods=["POST"])
 def post_done():
 
-    post_title = request.form['제목']
-    post_desc = request.form['내용']
+    post_title = request.form['post_title']
+    post_desc = request.form['post_desc']
     member_id = request.form['member_key']
 
     post_list = list(db.info.find({}, {'_id': False}))
@@ -130,7 +153,10 @@ def post_done():
 @app.route("/posting/list", methods=["GET"])
 def post_list():
 
-    posting_list = list(db.info.find({}, {'_id':False}))
+
+    posting_list = list(db.gugupost.find({}, {'_id':False}))
+    print(posting_list)
+
 
     return jsonify({'posting_list': posting_list})
 
@@ -153,13 +179,13 @@ def post_like():
         else:
             db.gugulike.delete_one(doc)
 
-        return jsonify({'post_like_msg':'게시글 좋아요 완료'})
+            return jsonify({'post_like_msg':'게시글 좋아요 완료'})
 
     except jwt.ExpiredSignatureError:
-        return render_template('lecture.html', result='fail', msg='만료된 토큰')
+            return render_template('lecture.html', result='fail', msg='만료된 토큰')
 
     except jwt.exceptions.DecodeError:
-        return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
+            return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
 
 # -----게시글 수정 기능
 @app.route("/posting/update", methods =["POST"])
@@ -167,6 +193,9 @@ def post_update():
     member_id = ['member_key']
     update_receive = ['update_give']
     db.gugupost.update_one({'memberid': member_id}, {'$set': {'post_desc': str(update_receive)}})
+
+
+
     return jsonify({'post_up_msg': '게시글 수정 완료'})
 
 # -----게시글 삭제 기능
@@ -181,6 +210,12 @@ def post_remove():
         object_id_receive = request.form['object_id_give']
         writer = db.gugupost.find_one({'_id': ObjectId(object_id_receive)})['member_id']
 
+
+        if user_info['member_id'] == writer:
+            db.comment.delete_one({'_id': ObjectId(object_id_receive)})
+            return jsonify({'post_rm_msg': '게시글 삭제 완료'})
+        else:
+            return jsonify({'msg': '다른 사람이 쓴 글은 삭제할 수 없습니다.'})
 
         if user_info['member_id'] == writer:
             db.comment.delete_one({'_id': ObjectId(object_id_receive)})

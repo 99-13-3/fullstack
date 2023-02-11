@@ -57,8 +57,18 @@
 <script>
 
     $(document).ready(function () {
-        show_bucket();
+        get_Qna_list()
     });
+
+    function read_posting() {
+        $.ajax({
+            type: "GET",
+            url: "/content/post_id",
+            data: {},
+            success: function (response) {
+
+            }
+        });
 
      function get_Qna_list() {
         $.ajax({
@@ -79,8 +89,12 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="ms-5">
-                                                    <a class="fw-bold mb-1" href="lecture.html"
-                                                       style="text-decoration: none; color: inherit;">${post_title}</a>
+                                                    <form action="/content/post_id" method="get">
+                                                    <button id="post_for_id" type="submit" onclick="read_posting()"></button>
+                                                    <label class="fw-bold mb-1" for="post_for_id"
+                                                       style="text-decoration: none; color: inherit;">${post_title}</label>
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </td>
@@ -106,7 +120,7 @@
         });
     }
 
-    function get_Qna_list_test() {
+    {#function get_Qna_list_test() {
 
 
         let post1 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
@@ -133,7 +147,7 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="ms-5">
-                                                    <a class="fw-bold mb-1" href="lecture.html/"
+                                                    <a class="fw-bold mb-1" href="lecture.html"
                                                        style="text-decoration: none; color: inherit;">${post_title}</a>
                                                 </div>
                                             </div>
@@ -145,10 +159,10 @@
 
             $('#Qna_list').append(temp)
 
-        }
+        }#}
 
 
-    }
+
 
 </script>
 </body>
@@ -192,9 +206,10 @@
                         </span>
                         </div>
                     </form>
-                    <form action="/login" method="post">
+                    <form action="/login" method="get">
                         <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
                     </form>
+
                 </div>
                 
             </div>
@@ -242,8 +257,8 @@
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="ms-5">
-                                <a class="fw-bold mb-1" href="lecture.html"
-                                   style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                                <a class="fw-bold mb-1" href="/content/post_id"
+                                   style="text-decoration: none; color: inherit;" onclick="">여기에 타이틀 제목이 들어갑니다</a>
 
                             </div>
                         </div>
