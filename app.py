@@ -1,5 +1,4 @@
 import hashlib
-
 from bson import ObjectId
 from flask import Flask, render_template, request, jsonify, session
 # import certifi
@@ -90,7 +89,6 @@ def content_page():
 
 # -----글쓰기 페이지로 이동
 
-
 @app.route('/posting')
 def posting_get():
     return render_template('editorTemplate.html')
@@ -103,7 +101,6 @@ def post_write():
     desc = request.form['desc']
     member_id = request.form['member_id']
     doc = {
-
         'title': title,
         'desc': desc,
         'member_id':member_id
@@ -114,19 +111,15 @@ def post_write():
 
 
 
+
 #
 
 
 # ----- 게시글리스트
 @app.route("/posting/list", methods=["GET"])
 def post_list():
-
-
-    posting_list = list(db.gugupost.find({}, {'_id':False}))
-    print(posting_list)
-
-
-    return jsonify({'posting_list': posting_list})
+   posting_list = list(db.gugupost.find({}, {'_id':False}))
+   return jsonify({'posting_list': posting_list})
 
 # ------ 게시글 좋아요/싫어요
 @app.route("/posting/like", methods=["GET"])
@@ -158,9 +151,11 @@ def post_like():
 # -----게시글 수정 기능
 @app.route("/posting/update", methods =["POST"])
 def post_update():
+
     title = request.form['title']
     desc = request.form['desc']
     db.gugupost.update_one({'title': title}, {'$set': {'post_desc': str(update_receive)}})
+
 
 
 
@@ -169,7 +164,6 @@ def post_update():
 # -----게시글 삭제 기능
 @app.route("/posting/delete", methods=["POST"])
 def post_remove():
-
     token_receive = request.cookies.get('mytoken')
 
     try:
@@ -177,7 +171,6 @@ def post_remove():
         user_info = db.info.find_one({"id": payload['id']})
         object_id_receive = request.form['object_id_give']
         writer = db.gugupost.find_one({'_id': ObjectId(object_id_receive)})['member_id']
-
 
         if user_info['member_id'] == writer:
             db.comment.delete_one({'_id': ObjectId(object_id_receive)})
@@ -205,7 +198,6 @@ def post_comment():
     comment_receive = request.form['comment_give']
     member_id = request.form['member_id']
 
-
     doc = {
         # 'member_id' : member_id,
         'comment' : comment_receive,
@@ -218,7 +210,6 @@ def post_comment():
 def get_comment():
     comment_list = list(db.comment.find({}, {'_id': False}))
     return jsonify({'comments': comment_list})
-
 
 #
 
