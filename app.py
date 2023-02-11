@@ -145,6 +145,9 @@ def post_done():
 
     return jsonify({'posting_msg': '게시글 등록 완료!'})
 
+@app.route('/posting_page', methods=["GET"])
+def post_page():
+    return render_template('editorTemplate.html')
 
 # ----- 게시글리스트
 @app.route("/posting/list", methods=["GET"])
