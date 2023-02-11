@@ -73,35 +73,7 @@ def register():
          return jsonify({'result': 'success', "msg":"회원가입이 완료됐습니다."})
       else:
          return jsonify({'msg': '이미 존재하는 아이디 입니다.'})
-
-@app.route('/post_edit')
-def post_main():
-   return render_template('editorTemplate.html')
-
-@app.route('/post_edit/post', methods=["POST"])
-def post_do():
    
-   return render_template('editorTemplate.html')
-   
-      
-# @app.route('/content')
-# def content_show():
-#    return render_template('index.html')
-
-# @app.route('/content/post_check', methods=['GET'])
-# def content_get():
-#    titles=list(db.gugupost.find_one({},{'_id':False}))
-#    post_desc=list(db.gugupost.find_one({},{'_id':False}))
-#    post_key=list(db.gugupost.find_one({},{'_id':False}))
-#    comments=list(db.comment.find_one({},{'_id':False}))
-#    member_key=list(db.info.find_one({},{'_id':False}))
-#    return jsonify({'comment_list':comments, 'post_desc':post_desc,
-#                    'member_id': member_key, 'post_id': post_key,
-#                    'post_title': titles})
-
-   
-
-
 # -----글쓰기 페이지로 이동
 def post_write():
 
