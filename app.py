@@ -1,4 +1,3 @@
-
 import hashlib
 
 from bson import ObjectId
@@ -9,13 +8,10 @@ from pymongo import MongoClient
 import jwt
 import datetime
 
-
 app = Flask(__name__)
-# ca=certifi.where()
-client = MongoClient('mongodb+srv://test:sparta@cluster0.lreiodk.mongodb.net/?retryWrites=true&w=majority')
-db = client.info
-
-
+ca=certifi.where()
+client = MongoClient('mongodb+srv://test:sparta@cluster0.lreiodk.mongodb.net/Cluster0?retryWrites=true&w=majority',tlsCAFile=ca)
+db=client.info
 
 SECRET_KEY = 'FLOW'
 
@@ -45,9 +41,9 @@ def login_post():
    pw_receive = request.form['pw_check']
 
    pw_hash =hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-
-   result = db.flow99.find_one({'id': id_receive, 'pw':pw_hash})
-
+   
+   result = db.info.find_one({'id': id_receive, 'pw':pw_hash})
+   
    if result is not None:
       payload = {
          'id': id_receive,
@@ -57,9 +53,9 @@ def login_post():
       return jsonify({'result':'success', 'tokens':token})
    else:
       return jsonify({'result':'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
-   # request.args.get("msg")은 받은 내용을 json형식의 데이터로 리턴하기 위해 사용
 
-# 회원가입 API
+# 회원가입
+
 @app.route('/register')
 def register_after():
       return render_template('loginAfter.html')
@@ -68,18 +64,26 @@ def register_after():
 def register():
       id_receive = request.form['id_give']
       pw_receive = request.form['pw_give']
-      # email_receive = request.form['email_give']
 
-      user = db.flow99.find_one({'id': id_receive})
-      print(user)
+      user = db.info.find_one({'id': id_receive})
       if user is None:
          pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-         db.flow99.insert_one({'id': id_receive, 'pw': pw_hash})
+         db.info.insert_one({'id': id_receive, 'pw': pw_hash})
          return jsonify({'result': 'success', "msg":"회원가입이 완료됐습니다."})
       else:
          return jsonify({'msg': '이미 존재하는 아이디 입니다.'})
 
-
+      
+# @app.route('/content/post_id', methods=['GET'])
+# def content_show():
+#    titles=list(db.포스트.find_one({},{'_id':False}))
+#    post_desc=list(db.포스트.find_one({},{'_id':False}))
+#    post_key=list(db.포스트.find_one({},{'_id':False}))
+#    comments=list(db.코멘트.find_one({},{'_id':False}))
+#    member_key=list(db.유저정보.find_one({},{'_id':False}))
+#    return jsonify({'comment_list':comments, 'post_desc':post_desc,
+#                    'member_id': member_key, 'post_id': post_key,
+#                    'post_title': titles})
 
 # -----글쓰기 페이지로 이동
 def post_write():
@@ -192,6 +196,7 @@ token_receive = request.cookies.get('mytoken')
 
         return render_template('login.html', result='fail', msg='로그인 후 이용해 주세요.')
 
+
 @app.route('/comment', methods=["POST"])
 def post_comment():
     token_receive = request.cookies.get('mytoken')
@@ -225,27 +230,28 @@ def get_comment():
     return jsonify({'comments': comment_list})
 
 
-    comment = request.form['comment_give']
-    # comment_id = list(포스트db.find{}, {'_id':False}))
-    # check = request.form['boolean']
+#     comment = request.form['comment_give']
+#     # comment_id = list(포스트db.find{}, {'_id':False}))
+#     # check = request.form['boolean']
 
-    # lists = list(db.comment.find({}, {'_id': False}))
-    # count = len(lists) + 1
-    doc = {
-       'comment' : comment,
-        # 'check': check,
-       # 'comment_id' : comment_id,
-       # 'Num' : count
+#     # lists = list(db.comment.find({}, {'_id': False}))
+#     # count = len(lists) + 1
+#     doc = {
+#        'comment' : comment,
+#         # 'check': check,
+#        # 'comment_id' : comment_id,
+#        # 'Num' : count
 
-    }
-    db.comment.insert_one(doc)
-    return jsonify({'result': 'success', 'msg': '댓글 등록 완료'})
+#     }
+#     db.comment.insert_one(doc)
+#     return jsonify({'result': 'success', 'msg': '댓글 등록 완료'})
 
 
 # @app.route("/comment", methods=["GET"])
 # def get_comment():
 #     comment_list = list(db.comment.find({}, {'_id': False}))
 #     return jsonify({'comments': comment_list})
+
 # @app.route('/comment/update', methods=["POST"])
 # def post_comment_update():
 #    member_id = request.form['member_id']
@@ -329,6 +335,5 @@ def dislike_comment():
     return jsonify({'msg': '싫어요 완료!'})
 
 
-
 if __name__ == '__main__':
-   app.run('0.0.0.0', port=8000, debug=True)
+   app.run('0.0.0.0', port=5000, debug=True)

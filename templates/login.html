@@ -44,10 +44,10 @@
 ></script>
 <script>
     function register() {
-        let temp = `<form id="register_form" method="post" action="/register">
+        let temp = `<form id="register_form" action="/" method="get">
                             <div class="form-outline mb-4">
-                                <input type="text" id="user_id" class="form-control form-control-lg"/>
-                                <label class="form-label" for="typeEmailX-2">User_Id</label>
+                                <input type="email" id="make_id" class="form-control form-control-lg"/>
+                                <label class="form-label" for="typeEmailX-2">Email</label>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -55,10 +55,10 @@
                                 <label class="form-label" for="typePasswordX-2">Password</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="password" id="typePasswordX-2-c" class="form-control form-control-lg"/>
-                                <label class="form-label" for="typePasswordX-2-c">Password_confirm</label>
+                                <input type="password" class="form-control form-control-lg"/>
+                                <label class="form-label" for="typePasswordX-2">Password_confirm</label>
                             </div>
-                            <button class="btn btn-primary btn-lg btn-block" type="button" id="register_btn" onclick="register_check()">회원가입</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="register_btn" onclick="register_finish()">회원가입</button>
                         </form>`
         $('#login_form').hide()
         $('#pw_btn').hide()
@@ -66,51 +66,12 @@
 
     }
 
-    function register_check() {
-        let pwd = $('#typePasswordX-2').val()
-        let pwd_c = $('#typePasswordX-2-c').val()
+    function register_action() {
+        let temp = `<button class="btn btn-secondary btn-lg btn-block" type="submit">회원가입</button>`
 
-        console.log(pwd)
-        console.log("hi")
-
-        if(pwd !== pwd_c){
-            alert("비밀번호가 서로 다릅니다.")
-        } else {
-            register_Post()
-        }
-
-    }
-
-    function register_Post() {
-
-            let user_id = $('#user_id').val()
-            let pwd = $('#typePasswordX-2').val()
-
-            $.ajax({
-                type: "POST",
-                url: "/sign_in",
-                data: {member_id : user_id , pw: pwd},
-                success: function (response) {
-                    console("loginToServer msg : "+response)
-                }
-            })
-    }
-
-    function loginToServer(){
-            let user_id = $('#user_id').val()
-            let pwd = $('#typePasswordX-2').val()
-
-
-            $.ajax({
-                type: "POST",
-                url: "/login",
-                data: {member_id : user_id , pw: pwd},
-                success: function (response) {
-                    console("loginToServer msg : "+response)
-                }
-            });
     }
 </script>
+
 <body>
 <section class="vh-100" style="background-color: #666666;">
     <div class="container py-5 h-100">
@@ -121,17 +82,18 @@
 
                         <h3><a href="index.html" h3 class="mb-5" style="color: #00b74a">99 Flow 🍀</a></h3>
 
-                        <form id="login_form" method="post" action="/login">
+                        <form id="login_form">
+
                             <div class="form-outline mb-4">
-                                <input type="text" id="user_id" class="form-control form-control-lg"/>
-                                <label class="form-label" for="typeEmailX-2">User_Id</label>
+                                <input type="email" id="login_id" class="form-control form-control-lg"/>
+                                <label class="form-label" for="typeEmailX-2">Email</label>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <input type="password" id="typePasswordX-2" class="form-control form-control-lg"/>
                                 <label class="form-label" for="typePasswordX-2">Password</label>
                             </div>
-                            <button class="btn btn-primary btn-lg btn-block" type="button" id="login_btn" onclick="loginToServer()">로그인</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="login_btn" onclick="logIn()">로그인</button>
                         </form>
                         <button class="btn btn-secondary btn-lg btn-block" type="button" onclick="register()" id="pw_btn">회원가입</button>
                         <div id="pw_idx">

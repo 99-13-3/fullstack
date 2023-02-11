@@ -1,30 +1,36 @@
-
-// console.log(document.getElementbyId('id').innerText)
-
 function register_finish(){
-    setTimeout("document.a.submit()", 5000);
     var makeId = $('#make_id').val()
-    console.log(makeId)
     var makePw = $('#make_pw').val()
-    console.log(makePw)
-
     $.ajax({
         type: "POST",
         data: {'id_give': makeId, 'pw_give': makePw},
         url: "/register",
         success: function(response){
-            console.log(response)
-           if(response['result'] === 'success'){
+           if(response['result'] == 'success'){
             alert(response['msg'])
-           } else{
+            register_pass()
+        } else{
             alert(response['msg'])
-           }
-            }
-    })
+            register_fail()
+        }
+    }
+})
+}
+
+var registerForm = document.getElementById("register_form")
+function register_pass(){
+    registerForm.action = "/"
+    registerForm.method = "GET"
+    registerForm.submit();
+
+}
+function register_fail(){
+    registerForm.action = "/"
+    registerForm.method = "GET"
+    registerForm.submit();
 }
 
 function logIn(){
-    setTimeout("document.a.submit()", 5000);
     var loginId = $('#login_id').val()
     var loginPw = $('#login_pw').val()
 $.ajax({
@@ -34,15 +40,27 @@ $.ajax({
     success: function(response){
         if (response['result']=='fail'){
             alert(response['msg'])
+            login_pass()
         }else{
-        alert("잘 입력했음")
+        alert("로그인 완료!")
+        login_fail()
     }
     }  
     })
 }
-// $(document).ready(function () {
-//     logIn();
-// });
+var loginForm = document.getElementById("login_form")
+function login_pass(){
+    loginForm.action = "/"
+    loginForm.method = "GET"
+    loginForm.submit();
+
+}
+function login_fail(){
+    loginForm.action = "/register"
+    loginForm.method = "GET"
+    loginForm.submit();
+}
+
 function loginClick(){
     $.ajax({
         type: "GET",
