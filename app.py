@@ -12,20 +12,19 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
-def home():
-   return render_template('index.html')
-
-# -----글쓰기 페이지로 이동
-@app.route('/write', )
-def post_upload():
-   memberid = db.fullstack.find_one({'_id:False'})
-   return render_template('indedx.html', memberid = memberid)
-
-# -----글쓰기 완료 기능
-@app.route('/write/posting', method=["GET", "POST"])
+# @app.route('/')
+# def home():
+#    return render_template('index.html')
+#
+# # -----글쓰기 페이지로 이동
+# @app.route('/write', )
+# def post_upload():
+#    memberid = db.fullstack.find_one({'_id:False'})
+#    return render_template('indedx.html', memberid = memberid)
+#
+# # -----글쓰기 완료 기능
+# @app.route('/write/posting', method=["GET", "POST"])
 def post_upload_done():
-   if request.method == "POST":
 
       title_receive = request.form['title_give']
       postdesc_receive = request.form['postdesc_give']
@@ -45,15 +44,14 @@ def post_upload_done():
       db.fullstack.insert_one(doc)
 
       return jsonify({'msg': '게시글 등록 완료!'})
-   else:
-      return render_template('index.html')
+
 
 # -----게시글 수정 기능
-@app.route("/posting", method =["PUT"])
-def post_update():
-   memberid = db.fullstack.find_one({'_id:False'})
-   postid = db.fullstack.find_one({'_id':False})
-   return render_template('index.html', memberid = memberid, postid = postid)
+# @app.route("/posting", method =["PUT"])
+# def post_update():
+#    memberid = db.fullstack.find_one({'_id:False'})
+#    postid = db.fullstack.find_one({'_id':False})
+#    return render_template('index.html', memberid = memberid, postid = postid)
 
 
 # -----게시글 삭제 기능
