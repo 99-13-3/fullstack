@@ -29,7 +29,6 @@ function register_fail(){
     registerForm.method = "GET"
     registerForm.submit();
 }
-
 function logIn(){
     var loginId = $('#login_id').val()
     var loginPw = $('#login_pw').val()
