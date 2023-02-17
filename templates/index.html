@@ -32,12 +32,6 @@
         font-family: 'Noto Sans KR', sans-serif;
     }
 
-    href {
-      "text-decoration: none; 
-      color: inherit;
-    }
-
-
     .e_course_click {
         text-decoration: none;
         color: black;
@@ -61,77 +55,105 @@
         crossorigin="anonymous">
 </script>
 <script>
-
     $(document).ready(function () {
-        show_bucket();
+        get_Qna_list()
     });
 
-    function get_Qna_list() {
+    function read_posting() {
         $.ajax({
             type: "GET",
-            url: "/bucket",
+            url: "/content/post_id",
             data: {},
             success: function (response) {
-
-                let page_limit = 10;
-
-                let qnaList = response['buckets']
-
-                if ()
-
-                    for (let i = 0; i < buckets.length; i++) {
-                        let bucket = buckets[i]['bucket']
-                        let num = buckets[i]['num']
-                        let done = buckets[i]['done']
-
-                    }
             }
         });
     }
-
-    function get_login_page() {
-        $.ajax({
-            type: "GET",
-            url: "/login",
-            data: {},
-            success: function (response) {
-
-            }
-        });
-    }
-
+  
     function get_Qna_list() {
-
-        let temp = `<tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-5">
-                                    <a class="fw-bold mb-1" href="lecture.html"
-                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="fw-normal mb-1">dignzh</p>
-                        </td>
-                    </tr>`
-
         $.ajax({
             type: "GET",
             url: "/posting/list",
             data: {},
             success: function (response) {
 
-                let post_list = response['posting_list']
+                let page_limit = 10;
+                let qnaList = response['posting_list']
 
-                for(let i=0; i<post_list.length; i++){
+                for (let i = 0; i < qnaList.length; i++) {
+                    let post_title = qnaList[i]['post_title']
+                    let member_id = qnaList[i]['member_id']
+                    let temp = `<tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-5">
+                                                    <form action="/content/post_id" method="get">
+                                                    <button id="post_for_id" type="submit" onclick="read_posting()"></button>
+                                                    <label class="fw-bold mb-1" for="post_for_id"
+                                                       style="text-decoration: none; color: inherit;">${post_title}</label>
+                                                    </form>
 
-                }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fw-normal mb-1">${member_id}</p>
+                                        </td>
+                                    </tr>`
+
+                    $('#Qna_list').append(temp)
             }
+        }
         });
-
     }
 
+    function get_login_page() {
+
+        $.ajax({
+            type: "GET",
+            url: "/login",
+            data: {},
+            success: function (response) {
+            }
+        });
+    }
+
+    {#function get_Qna_list_test() {
+
+        let post1 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post2 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post3 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+        let post4 = {post_title: "제목", post_desc: "내용", post_id: 1, member_id: "dignzh"}
+
+        let posting_list = [post1, post2, post3, post4];
+
+        Qna_list_data(posting_list)
+    }
+
+    function Qna_list_data(qnaList) {
+        console.log("hi")
+        console.log(qnaList.length)
+
+        for (let i = 0; i < qnaList.length; i++) {
+            let post_title = qnaList[i]['post_title']
+            let member_id = qnaList[i]['member_id']
+            let temp = `<tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-5">
+                                                    <a class="fw-bold mb-1" href="lecture.html"
+                                                       style="text-decoration: none; color: inherit;">${post_title}</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fw-normal mb-1">${member_id}</p>
+                                        </td>
+                                    </tr>`
+
+            $('#Qna_list').append(temp)
+        }
+    }
+     
 </script>
 </body>
 
@@ -173,13 +195,11 @@
                             <i class="fas fa-search"></i>
                         </span>
                         </div>
-
                     </form>
                     <form action="/login" method="get">
                         <button class="btn btn-outline-success" style="margin-right: 10%" type="submit">로그인</button>
                     </form>
                 </div>
-                
             </div>
         </nav>
     </header>
@@ -194,6 +214,7 @@
                  style="text-align: center">
                 Spring is Comming
             </div>
+            <button onclick="get_Qna_list_test()">테스트</button>
 
             <p style="margin-top: 100px">
                 <a class="move_category" href="#">질문 🚩 ></a>
@@ -205,23 +226,7 @@
                     <th>Name</th>
                 </tr>
                 </thead>
-                <tbody>
-                <div id="Qna_list">
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-5">
-                                    <a class="fw-bold mb-1" href="lecture.html"
-                                       style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="fw-normal mb-1">dignzh</p>
-                        </td>
-                    </tr>
-                </div>
-
+                <tbody id="Qna_list">
                 </tbody>
             </table>
 
@@ -240,8 +245,8 @@
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="ms-5">
-                                <a class="fw-bold mb-1" href="lecture.html"
-                                   style="text-decoration: none; color: inherit;">여기에 타이틀 제목이 들어갑니다</a>
+                                <a class="fw-bold mb-1" href="/content/post_id"
+                                   style="text-decoration: none; color: inherit;" onclick="">여기에 타이틀 제목이 들어갑니다</a>
 
                             </div>
                         </div>
@@ -288,24 +293,17 @@
                     <td>
                         <p class="fw-normal mb-1">dignzh</p>
                     </td>
-
                 </tr>
-
-
                 </tbody>
             </table>
 
         </div>
-
-
     </section>
     <footer class="footer_wrap">
         <!-- 푸터 - 페이지 하단 -->
-
     </footer>
-
-
 </div>
-
+<script src="../static/js/login.js"></script>
+<script src="../static/js/content.js"></script>
 </body>
 </html>
